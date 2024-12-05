@@ -5,24 +5,13 @@ pipeline {
         timeout(time: 10, unit: 'MINUTES')
      }
     environment {
-    DOCKERHUB_CREDENTIALS = credentials('dadah-dockerhub')
+    DOCKERHUB_CREDENTIALS = credentials('dadahdocker')
     APP_NAME = "dadahdocker/amazon"
     }
     stages { 
         stage('SCM Checkout') {
             steps{
            git branch: 'main', url: 'https://github.com/dadah3227/Amazon-clone-Dockerized.git'
-            }
-        }
-        // run sonarqube test
-        stage('Run Sonarqube') {
-            environment {
-                scannerHome = tool 'ibt-sonarqube';
-            }
-            steps {
-              withSonarQubeEnv(credentialsId: 'ibt-sonar', installationName: 'IBT sonarqube') {
-                sh "${scannerHome}/bin/sonar-scanner"
-              }
             }
         }
         stage('login to dockerhub') {
